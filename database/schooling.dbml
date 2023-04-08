@@ -1,0 +1,700 @@
+Project "schooling-weboender" {
+  database_type: 'MySQL'
+  Note: 'School Management System built using laravel 9'
+}
+
+Table "announcements" {
+  "id" bigint(20) [pk, not null, increment]
+  "title" varchar(255) [not null]
+  "description" longtext [not null]
+  "slug" varchar(255) [not null]
+  "publish" timestamp [default: NULL]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "api_users" {
+  "id" bigint(20) [pk, not null, increment]
+  "user_id" bigint(20) [default: NULL]
+  "project_name" varchar(255) [not null]
+  "is_active" tinyint(1) [not null]
+  "token" varchar(32) [not null]
+  "ability" text [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  token [unique, name: "api_users_token_unique"]
+  user_id [name: "api_users_user_id_foreign"]
+}
+}
+
+Table "category_items" {
+  "id" bigint(20) [pk, not null, increment]
+  "name" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "category_subjects" {
+  "id" bigint(20) [pk, not null, increment]
+  "name" varchar(255) [not null]
+  "status" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "classes" {
+  "id" bigint(20) [pk, not null, increment]
+  "name" varchar(255) [not null]
+  "code" varchar(255) [not null]
+  "major_id" bigint(20) [default: NULL]
+  "teacher_id" bigint(20) [default: NULL]
+  "status" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  major_id [name: "classes_major_id_foreign"]
+  teacher_id [name: "classes_teacher_id_foreign"]
+}
+}
+
+Table "dispositions" {
+  "id" bigint(20) [pk, not null, increment]
+  "mailin_id" bigint(20) [not null]
+  "mail_destination" varchar(255) [not null]
+  "status" varchar(255) [not null]
+  "description" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  mailin_id [name: "dispositions_mailin_id_foreign"]
+}
+}
+
+Table "failed_jobs" {
+  "id" bigint(20) [pk, not null, increment]
+  "uuid" varchar(255) [not null]
+  "connection" text [not null]
+  "queue" text [not null]
+  "payload" longtext [not null]
+  "exception" longtext [not null]
+  "failed_at" timestamp [not null, default: `current_timestamp()`]
+
+Indexes {
+  uuid [unique, name: "failed_jobs_uuid_unique"]
+}
+}
+
+Table "guest_books" {
+  "id" bigint(20) [pk, not null, increment]
+  "name" varchar(255) [not null]
+  "email" varchar(255) [not null]
+  "phone" varchar(255) [not null]
+  "instance" varchar(255) [not null]
+  "necessary" longtext [not null]
+  "date" date [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "homeroom_teachers" {
+  "id" bigint(20) [pk, not null, increment]
+  "teacher_id" bigint(20) [default: NULL]
+  "classes_id" bigint(20) [default: NULL]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  teacher_id [name: "homeroom_teachers_teacher_id_foreign"]
+  classes_id [name: "homeroom_teachers_classes_id_foreign"]
+}
+}
+
+Table "items" {
+  "id" bigint(20) [pk, not null, increment]
+  "code" varchar(255) [not null]
+  "name" varchar(255) [not null]
+  "categoryitem_id" bigint(20) [not null]
+  "unit" varchar(255) [not null]
+  "amount" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  categoryitem_id [name: "items_categoryitem_id_foreign"]
+}
+}
+
+Table "item_ins" {
+  "id" bigint(20) [pk, not null, increment]
+  "item_id" bigint(20) [not null]
+  "amount" varchar(255) [not null]
+  "price" varchar(255) [not null]
+  "funds" varchar(255) [not null]
+  "description" longtext [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  item_id [name: "item_ins_item_id_foreign"]
+}
+}
+
+Table "item_outs" {
+  "id" bigint(20) [pk, not null, increment]
+  "item_id" bigint(20) [not null]
+  "amount" varchar(255) [not null]
+  "description" longtext [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  item_id [name: "item_outs_item_id_foreign"]
+}
+}
+
+Table "mail_categories" {
+  "id" bigint(20) [pk, not null, increment]
+  "name" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "mail_ins" {
+  "id" bigint(20) [pk, not null, increment]
+  "number_mail" varchar(255) [not null]
+  "date_incoming" varchar(255) [not null]
+  "date_accept" varchar(255) [not null]
+  "type" varchar(255) [not null]
+  "disposition_id" varchar(255) [default: NULL]
+  "mailcategory_id" bigint(20) [not null]
+  "description" longtext [not null]
+  "mail_regarding" varchar(255) [not null]
+  "mail_origin" varchar(255) [default: NULL]
+  "mail_maker" varchar(255) [not null]
+  "mail_destination" varchar(255) [default: NULL]
+  "file" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  mailcategory_id [name: "mail_ins_mailcategory_id_foreign"]
+}
+}
+
+Table "mail_outs" {
+  "id" bigint(20) [pk, not null, increment]
+  "number_mail" varchar(255) [not null]
+  "date_outcoming" varchar(255) [not null]
+  "type" varchar(255) [not null]
+  "mailcategory_id" bigint(20) [not null]
+  "description" longtext [not null]
+  "mail_regarding" varchar(255) [not null]
+  "mail_origin" varchar(255) [default: NULL]
+  "mail_maker" varchar(255) [not null]
+  "mail_destination" varchar(255) [default: NULL]
+  "file" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  mailcategory_id [name: "mail_outs_mailcategory_id_foreign"]
+}
+}
+
+Table "majors" {
+  "id" bigint(20) [pk, not null, increment]
+  "code" varchar(255) [not null]
+  "name" varchar(255) [not null]
+  "status" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "medicines" {
+  "id" bigint(20) [pk, not null, increment]
+  "name" varchar(255) [not null]
+  "description" varchar(255) [not null]
+  "stock" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "migrations" {
+  "id" int(10) [pk, not null, increment]
+  "migration" varchar(255) [not null]
+  "batch" int(11) [not null]
+}
+
+Table "news" {
+  "id" bigint(20) [pk, not null, increment]
+  "news_category_id" bigint(20) [not null]
+  "title" varchar(200) [not null]
+  "description" longtext [not null]
+  "image" varchar(255) [not null]
+  "type" varchar(255) [default: NULL]
+  "slug" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  news_category_id [name: "news_news_category_id_foreign"]
+}
+}
+
+Table "news_categories" {
+  "id" bigint(20) [pk, not null, increment]
+  "name" varchar(100) [not null]
+  "slug" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "otps" {
+  "id" bigint(20) [pk, not null, increment]
+  "email" varchar(255) [not null]
+  "code" int(11) [not null]
+  "expired_date" datetime [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "password_resets" {
+  "email" varchar(255) [not null]
+  "token" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+
+Indexes {
+  email [name: "password_resets_email_index"]
+}
+}
+
+Table "patients" {
+  "id" bigint(20) [pk, not null, increment]
+  "name" varchar(255) [default: NULL]
+  "patient_description" varchar(255) [default: NULL]
+  "complaint" longtext [default: NULL]
+  "handling" varchar(255) [default: NULL]
+  "date" datetime [default: NULL]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "patient_details" {
+  "id" bigint(20) [pk, not null, increment]
+  "patient_id" bigint(20) [not null]
+  "medicine_id" bigint(20) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  patient_id [name: "patient_details_patient_id_foreign"]
+  medicine_id [name: "patient_details_medicine_id_foreign"]
+}
+}
+
+Table "personal_access_tokens" {
+  "id" bigint(20) [pk, not null, increment]
+  "tokenable_type" varchar(255) [not null]
+  "tokenable_id" bigint(20) [not null]
+  "name" varchar(255) [not null]
+  "token" varchar(64) [not null]
+  "abilities" text [default: NULL]
+  "last_used_at" timestamp [default: NULL]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  token [unique, name: "personal_access_tokens_token_unique"]
+  (tokenable_type, tokenable_id) [name: "personal_access_tokens_tokenable_type_tokenable_id_index"]
+}
+}
+
+Table "positions" {
+  "id" bigint(20) [pk, not null, increment]
+  "name" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "principals" {
+  "id" bigint(20) [pk, not null, increment]
+  "teacher_id" bigint(20) [default: NULL]
+  "status" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  teacher_id [name: "principals_teacher_id_foreign"]
+}
+}
+
+Table "procurements" {
+  "id" bigint(20) [pk, not null, increment]
+  "description" varchar(255) [not null]
+  "code" varchar(255) [not null]
+  "total_item" int(11) [not null]
+  "total_amount" int(11) [not null]
+  "date_procurement" datetime [not null]
+  "status" varchar(255) [not null]
+  "nota" varchar(255) [default: NULL]
+  "description_nota" varchar(255) [default: NULL]
+  "approve_nota" datetime [default: NULL]
+  "date_nota" datetime [default: NULL]
+  "approve" varchar(255) [default: NULL]
+  "date_approve" datetime [default: NULL]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "procurement_details" {
+  "id" bigint(20) [pk, not null, increment]
+  "procurement_id" varchar(255) [default: NULL]
+  "item_id" bigint(20) [not null]
+  "supplier_id" bigint(20) [not null]
+  "qty" int(11) [not null]
+  "price" int(11) [not null]
+  "sub_total" int(11) [default: NULL]
+  "grand_total" int(11) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  item_id [name: "procurement_details_item_id_foreign"]
+  supplier_id [name: "procurement_details_supplier_id_foreign"]
+}
+}
+
+Table "rooms" {
+  "id" bigint(20) [pk, not null, increment]
+  "name" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "school_profiles" {
+  "id" bigint(20) [pk, not null, increment]
+  "name" varchar(200) [not null]
+  "npsn" varchar(255) [default: NULL]
+  "nss" varchar(255) [default: NULL]
+  "address" longtext [default: NULL]
+  "website" varchar(255) [default: NULL]
+  "email" varchar(255) [default: NULL]
+  "whatsapp" varchar(255) [default: NULL]
+  "instagram" varchar(255) [default: NULL]
+  "facebook" varchar(255) [default: NULL]
+  "youtube" varchar(255) [default: NULL]
+  "image" varchar(255) [default: NULL]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "school_years" {
+  "id" bigint(20) [pk, not null, increment]
+  "year" varchar(255) [not null]
+  "semester" varchar(255) [not null]
+  "status" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "setting_classes" {
+  "id" bigint(20) [pk, not null, increment]
+  "classes_id" bigint(20) [default: NULL]
+  "subject_id" bigint(20) [default: NULL]
+  "teacher_id" bigint(20) [default: NULL]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  classes_id [name: "setting_classes_classes_id_foreign"]
+  subject_id [name: "setting_classes_subject_id_foreign"]
+  teacher_id [name: "setting_classes_teacher_id_foreign"]
+}
+}
+
+Table "staff" {
+  "id" bigint(20) [pk, not null, increment]
+  "user_id" bigint(20) [default: NULL]
+  "gender" varchar(255) [not null]
+  "birthdate" date [not null]
+  "birthplace" varchar(255) [not null]
+  "phone" varchar(255) [not null]
+  "address" varchar(255) [not null]
+  "religion" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  user_id [name: "staff_user_id_foreign"]
+}
+}
+
+Table "students" {
+  "id" bigint(20) [pk, not null, increment]
+  "nis" int(11) [not null]
+  "nisn" int(11) [not null]
+  "classes_id" bigint(20) [default: NULL]
+  "user_id" bigint(20) [default: NULL]
+  "gender" varchar(255) [not null]
+  "birthdate" date [not null]
+  "birthplace" varchar(255) [not null]
+  "phone" varchar(255) [not null]
+  "address" varchar(255) [not null]
+  "religion" varchar(255) [not null]
+  "generation" varchar(255) [not null]
+  "alumni" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  classes_id [name: "students_classes_id_foreign"]
+  user_id [name: "students_user_id_foreign"]
+}
+}
+
+Table "subjects" {
+  "id" bigint(20) [pk, not null, increment]
+  "name" varchar(255) [not null]
+  "category_subject_id" bigint(20) [default: NULL]
+  "code" varchar(255) [not null]
+  "status" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  category_subject_id [name: "subjects_category_subject_id_foreign"]
+}
+}
+
+Table "suppliers" {
+  "id" bigint(20) [pk, not null, increment]
+  "code" varchar(255) [not null]
+  "name" varchar(255) [not null]
+  "email" varchar(255) [not null]
+  "phone" varchar(255) [not null]
+  "address" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "teachers" {
+  "id" bigint(20) [pk, not null, increment]
+  "nip" varchar(255) [not null]
+  "user_id" bigint(20) [default: NULL]
+  "gender" varchar(255) [not null]
+  "birthdate" date [not null]
+  "birthplace" varchar(255) [not null]
+  "phone" varchar(255) [not null]
+  "address" varchar(255) [not null]
+  "religion" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  user_id [name: "teachers_user_id_foreign"]
+}
+}
+
+Table "uks_officers" {
+  "id" bigint(20) [pk, not null, increment]
+  "student_id" bigint(20) [not null]
+  "day" varchar(255) [not null]
+  "time_start" varchar(255) [not null]
+  "time_end" varchar(255) [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  student_id [name: "uks_officers_student_id_foreign"]
+}
+}
+
+Table "users" {
+  "id" bigint(20) [pk, not null, increment]
+  "name" varchar(255) [not null]
+  "position_id" bigint(20) [default: NULL]
+  "username" varchar(255) [default: NULL]
+  "email" varchar(255) [not null]
+  "email_verified_at" timestamp [default: NULL]
+  "password" varchar(255) [not null]
+  "two_factor_secret" text [default: NULL]
+  "two_factor_recovery_codes" text [default: NULL]
+  "is_admin" tinyint(1) [not null, default: 0]
+  "is_active" tinyint(1) [not null, default: 0]
+  "status" varchar(255) [not null, default: "user"]
+  "image" varchar(255) [default: NULL]
+  "remember_token" varchar(100) [default: NULL]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+
+Indexes {
+  email [unique, name: "users_email_unique"]
+  position_id [name: "users_position_id_foreign"]
+}
+}
+Table "daily_journals" {
+  id int [pk, increment]
+  title varchar [not null]
+  description text [not null]
+  date date [not null]
+  class_id int [not null, ref: > classes.id]
+  subject_id int [not null, ref: > subjects.id]
+  teacher_id int [not null, ref: > teachers.id]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "tasks" {
+  id int [pk, increment]
+  name varchar [not null]
+  class_id int [not null, ref: > classes.id]
+  subject_id int [not null, ref: > subjects.id]
+  teacher_id int [not null, ref: > teachers.id]
+  task_deadline date [not null]
+  task_description text [not null]
+  daily_journal_id int [ref: > daily_journals.id, default: NULL]
+  status boolean [not null]  
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "scores" {
+  id int [pk, increment]
+  value int
+  student_id int [not null, ref: > students.id]
+  task_id int [not null, ref: > tasks.id]  
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+}
+
+Table "attendees" {
+  id int [pk, increment]
+  student_id int [not null, ref: > students.id]
+  daily_journal_id int [not null, ref: > daily_journals.id]
+  status varchar [not null]
+  "created_at" timestamp [default: NULL]
+  "updated_at" timestamp [default: NULL]
+  
+}
+
+Table "books" {
+    id int [pk, increment]
+    code varchar(255) [unique]
+    title varchar(255) [not null]        
+    location varchar(255) [not null]
+    stock int [not null]
+    author_id int [ref: > authors.id]
+    category_id int [ref: > book_categories.id]        
+    created_at timestamp
+    updated_at timestamp
+}
+
+Table "publishers" {
+  id int [pk, increment]
+  name varchar(255) [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table "authors" {
+  id int [pk, increment]
+  name varchar(255) [not null]
+  location varchar(255) [not null]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table "book_categories" {
+    id int [pk, increment]
+    name varchar(255) [not null]
+}
+
+Table "rentals" {
+    id int [pk, increment]
+    book_id int [ref: > books.id]
+    student_id int [ref: > students.id]
+    status rental_status
+    description text
+    created_at timestamp
+    return_date date
+}
+
+Table "borrowing_fines" {
+    id int [pk, increment]
+    rental_id int [ref: > rentals.id]
+    student_id int [ref: > students.id]
+    fine int [not null]
+    description text
+    created_at timestamp
+}
+
+Enum rental_status {
+    completed
+    ongoing
+}
+
+Table todos {
+  id int [pk, increment]
+  student_id int [ref: > students.id]
+  task_id int [ref: > tasks.id]
+  status boolean [not null]
+  created_at timestamp
+}
+
+Ref "api_users_user_id_foreign":"users"."id" < "api_users"."user_id" [update: cascade, delete: cascade]
+
+Ref "classes_major_id_foreign":"majors"."id" < "classes"."major_id" [update: cascade, delete: cascade]
+
+Ref "classes_teacher_id_foreign":"teachers"."id" < "classes"."teacher_id" [update: cascade, delete: cascade]
+
+Ref "dispositions_mailin_id_foreign":"mail_ins"."id" < "dispositions"."mailin_id" [update: cascade, delete: cascade]
+
+Ref "homeroom_teachers_classes_id_foreign":"classes"."id" < "homeroom_teachers"."classes_id" [update: cascade, delete: cascade]
+
+Ref "homeroom_teachers_teacher_id_foreign":"teachers"."id" < "homeroom_teachers"."teacher_id" [update: cascade, delete: cascade]
+
+Ref "items_categoryitem_id_foreign":"items"."id" < "items"."categoryitem_id" [update: cascade, delete: cascade]
+
+Ref "item_ins_item_id_foreign":"items"."id" < "item_ins"."item_id" [update: cascade, delete: cascade]
+
+Ref "item_outs_item_id_foreign":"items"."id" < "item_outs"."item_id" [update: cascade, delete: cascade]
+
+Ref "mail_ins_mailcategory_id_foreign":"mail_categories"."id" < "mail_ins"."mailcategory_id" [update: cascade, delete: cascade]
+
+Ref "mail_outs_mailcategory_id_foreign":"mail_categories"."id" < "mail_outs"."mailcategory_id" [update: cascade, delete: cascade]
+
+Ref "news_news_category_id_foreign":"news_categories"."id" < "news"."news_category_id" [delete: cascade]
+
+Ref "patient_details_medicine_id_foreign":"medicines"."id" < "patient_details"."medicine_id" [update: cascade, delete: cascade]
+
+Ref "patient_details_patient_id_foreign":"patients"."id" < "patient_details"."patient_id" [update: cascade, delete: cascade]
+
+Ref "principals_teacher_id_foreign":"teachers"."id" < "principals"."teacher_id" [update: cascade, delete: cascade]
+
+Ref "procurement_details_item_id_foreign":"items"."id" < "procurement_details"."item_id" [update: cascade, delete: cascade]
+
+Ref "procurement_details_supplier_id_foreign":"suppliers"."id" < "procurement_details"."supplier_id" [update: cascade, delete: cascade]
+
+Ref "setting_classes_classes_id_foreign":"classes"."id" < "setting_classes"."classes_id" [update: cascade, delete: cascade]
+
+Ref "setting_classes_subject_id_foreign":"subjects"."id" < "setting_classes"."subject_id" [update: cascade, delete: cascade]
+
+Ref "setting_classes_teacher_id_foreign":"teachers"."id" < "setting_classes"."teacher_id" [update: cascade, delete: cascade]
+
+Ref "staff_user_id_foreign":"users"."id" < "staff"."user_id" [update: cascade, delete: cascade]
+
+Ref "students_classes_id_foreign":"classes"."id" < "students"."classes_id" [update: cascade, delete: cascade]
+
+Ref "students_user_id_foreign":"users"."id" < "students"."user_id" [update: cascade, delete: cascade]
+
+Ref "subjects_category_subject_id_foreign":"category_subjects"."id" < "subjects"."category_subject_id" [update: cascade, delete: cascade]
+
+Ref "teachers_user_id_foreign":"users"."id" < "teachers"."user_id" [update: cascade, delete: cascade]
+
+Ref "uks_officers_student_id_foreign":"students"."id" < "uks_officers"."student_id" [update: cascade, delete: cascade]
+
+Ref "users_position_id_foreign":"positions"."id" < "users"."position_id" [update: cascade, delete: cascade]
